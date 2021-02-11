@@ -24,9 +24,12 @@ author = "Tamr"
 # Read version and format for website display. Change '0.1.0-axe' to '0.1.0 - Axe'
 with open("../version.txt") as f:
     raw_version = f.read().splitlines()[0]
+    print(f"raw_version: {raw_version}")
+    print(f"full file:{f.read().splitlines()}")
 raw_version_parts = raw_version.split("-")
+print(f"raw_version_parts: {raw_version_parts}")
 version = f"{raw_version_parts[0]} - {raw_version_parts[1].capitalize()}"
-
+print(f"version: {version}")
 
 # -- General configuration ---------------------------------------------------
 
