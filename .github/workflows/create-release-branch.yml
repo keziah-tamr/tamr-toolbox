@@ -3,10 +3,10 @@ on:
   workflow_dispatch:
     inputs:
       version_number:
-        description: 'The number of this release in the format: 0.0.0'
+        description: 'The number for this release in the format: 0.0.0'
         required: true
       version_toolname:
-        description: 'The tool name of this release such as: axe'
+        description: 'The tool name for this release such as: axe'
         required: true
 
 jobs:
@@ -49,9 +49,6 @@ jobs:
 
       - name: Move docs to online pages location
         run: cp -r docs/_draft_build docs/${{ steps.get_version_short.outputs.version }} && cp docs/_draft_build docs/latest
-
-      - name: Copy latest docs to current release docs
-        run: pass
 
       - uses: peter-evans/create-pull-request@v3
         with:
