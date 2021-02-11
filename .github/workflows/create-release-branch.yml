@@ -14,14 +14,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout develop branch
-          uses: actions/checkout@v2
-          with:
-            ref: "develop"
+        uses: actions/checkout@v2
+        with:
+          ref: "develop"
       - name: Update version file
         run: echo '${{ github.event.inputs.version_number }}+${{ github.event.inputs.version_toolname }}' > version.txt
       - name: Export version
-          run: echo ::set-output name=version::$(cat version.txt)
-          id: get_version
+        run: echo ::set-output name=version::$(cat version.txt)
+        id: get_version
 
       - name: Install Python
         uses: actions/setup-python@v2
