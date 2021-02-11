@@ -1,4 +1,4 @@
-name: Draft Release
+name: Create Release Branch
 on:
   workflow_dispatch:
     inputs:
@@ -10,7 +10,7 @@ on:
         required: true
 
 jobs:
-  Release:
+  create-release-branch:
     runs-on: ubuntu-20.04
     steps:
       - name: Checkout develop branch
@@ -48,7 +48,7 @@ jobs:
         run: rm -r docs/latest
 
       - name: Move docs to online pages location
-        run: cp -r docs/_draft_build docs/${{ steps.get_version_short.outputs.version }} && cp docs/_draft_build docs/latest
+        run: cp -r docs/_draft_build docs/${{ steps.get_version_short.outputs.version }} && cp -r docs/_draft_build docs/latest
 
       - uses: peter-evans/create-pull-request@v3
         with:
