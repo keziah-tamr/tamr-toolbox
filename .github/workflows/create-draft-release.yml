@@ -1,0 +1,55 @@
+name: Draft Release
+on:
+  workflow_dispatch:
+
+jobs:
+  Release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v2
+        with:
+          ref: "main"
+      - name: Export version
+          run: echo ::set-output name=version::$(cat version.txt)
+          id: get_version
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.6
+      - name: Install requirements
+        run: python install.py
+
+      - name: Run tests
+        run: invoke test
+      - name: Run lint check
+        run: invoke lint
+      - name: Run format check
+        run: invoke format
+
+      - name: Build docs
+        run: invoke docs
+      - name: Create pdf
+        run: python ./docs/generate_pdf.py
+
+      - name: Create Release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.get_version.outputs.version }}
+          release_name: Release ${{ steps.get_version.outputs.version }}
+          draft: true
+          prerelease: false
+          body: "Documentation: https://datatamer.github.io/tamr-toolbox/" + ${{ steps.get_version.outputs.version }} + "/index.html\n\n Highlights:\n"
+
+      - name: Upload pdf docs
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./tamr-toolbox.pdf
+          asset_name: tamr_toolbox_${{ steps.get_version.outputs.version }}_html_documentation.zip
+          asset_content_type: application/zip
