@@ -1,0 +1,71 @@
+name: Draft Release
+on:
+  workflow_dispatch:
+    inputs:
+      version_number:
+        description: 'The number of this release in the format: 0.0.0'
+        required: true
+      version_toolname:
+        description: 'The tool name of this release such as: axe'
+        required: true
+
+jobs:
+  Release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout develop branch
+          uses: actions/checkout@v2
+          with:
+            ref: "develop"
+      - name: Update version file
+        run: echo '${{ github.event.inputs.version_number }}+${{ github.event.inputs.version_toolname }}' > version.txt
+      - name: Export version
+          run: echo ::set-output name=version::$(cat version.txt)
+          id: get_version
+
+      - name: Install Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.6
+      - name: Install requirements
+        run: python install.py
+
+      - name: Run tests
+        run: invoke test
+      - name: Run lint check
+        run: invoke lint
+      - name: Run format check
+        run: invoke format
+
+      - name: Build docs
+        run: invoke docs
+
+      - name: Remove previous latest doc
+        run: rm -r docs/latest
+
+      - name: Move docs to online pages location
+        run: cp docs/_draft_build docs/${{ steps.get_version.outputs.version }} && cp docs/_draft_build docs/latest
+
+      - uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Increment toolbox version to ${{ steps.get_version.outputs.version }}
+          title: Merge new features into develop for ${{ steps.get_version.outputs.version }}
+          base: develop
+          branch: release-${{ steps.get_version.outputs.version }}
+
+      - uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Increment toolbox version to ${{ steps.get_version.outputs.version }}
+          title: Merge new features into main for ${{ steps.get_version.outputs.version }}
+          base: main
+          branch: release-${{ steps.get_version.outputs.version }}
+
+
+
+
+
+
+
+
