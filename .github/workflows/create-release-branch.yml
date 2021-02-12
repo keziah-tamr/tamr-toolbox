@@ -52,6 +52,13 @@ jobs:
       - name: Move docs to online pages location
         run: cp -r docs/_draft_build docs/${{ steps.get_version_short.outputs.version }} && cp -r docs/_draft_build docs/latest
 
+      - name: Commit & Push changes
+        uses: actions-js/push@master
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: release-${{ steps.get_version.outputs.version }}
+          message: Release ${{ steps.get_version.outputs.version }}
+
   create-pr-main:
     runs-on: ubuntu-20.04
     needs: [create_release_branch]
