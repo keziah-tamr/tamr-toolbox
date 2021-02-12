@@ -57,6 +57,7 @@ jobs:
           title: Merge new features into develop for ${{ steps.get_version.outputs.version }}
           base: develop
           branch: release-${{ steps.get_version.outputs.version }}
+          delete-branch: false
 
       - uses: peter-evans/create-pull-request@v3
         with:
@@ -64,7 +65,10 @@ jobs:
           commit-message: Increment toolbox version to ${{ steps.get_version.outputs.version }} in main
           title: Merge new features into main for ${{ steps.get_version.outputs.version }}
           base: main
-          branch: release-${{ steps.get_version.outputs.version }}
+          # Cannot create two seperate PRs with the same  branch within Action
+          # So we create a "temp" branch for one of the PRs
+          branch: temp-release-${{ steps.get_version.outputs.version }}
+          delete-branch: true
 
 
 
