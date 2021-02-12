@@ -57,7 +57,6 @@ jobs:
           title: Merge new features into develop for ${{ steps.get_version.outputs.version }}
           base: develop
           branch: release-${{ steps.get_version.outputs.version }}
-          delete-branch: false
 
       - uses: peter-evans/create-pull-request@v3
         with:
@@ -68,12 +67,3 @@ jobs:
           # Cannot create two seperate PRs with the same  branch within Action
           # So we create a "temp" branch for one of the PRs
           branch: temp-release-${{ steps.get_version.outputs.version }}
-          delete-branch: true
-
-
-
-
-
-
-
-
