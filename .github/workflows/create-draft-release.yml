@@ -21,18 +21,18 @@ jobs:
       - name: Install requirements
         run: python install.py
 
-      - name: Run tests
-        run: invoke test
-      - name: Run lint check
-        run: invoke lint
-      - name: Run format check
-        run: invoke format
+#      - name: Run tests
+#        run: invoke test
+#      - name: Run lint check
+#        run: invoke lint
+#      - name: Run format check
+#        run: invoke format
 
       - name: Build docs
         run: invoke docs
 
       - name: Install wkhtmltopdf
-        run: sudo apt-get install wkhtmltopdf
+        run: brew cask install wkhtmltopdf
       - name: Create pdf
         run: python ./doc_src/generate_pdf.py
 
