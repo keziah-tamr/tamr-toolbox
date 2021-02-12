@@ -31,7 +31,7 @@ jobs:
       - name: Build docs
         run: invoke docs
       - name: Create pdf
-        run: python ./docs/generate_pdf.py
+        run: python ./doc_src/generate_pdf.py
 
       - name: Create Release
         uses: actions/create-release@v1
@@ -50,6 +50,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./tamr-toolbox.pdf
+          asset_path: ./docs/_draft_build/tamr-toolbox.pdf
           asset_name: tamr_toolbox_${{ steps.get_version.outputs.version }}.pdf
           asset_content_type: application/pdf
