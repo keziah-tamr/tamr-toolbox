@@ -52,27 +52,34 @@ jobs:
       - name: Move docs to online pages location
         run: cp -r docs/_draft_build docs/${{ steps.get_version_short.outputs.version }} && cp -r docs/_draft_build docs/latest
 
-      - name: Commit & Push changes
-        uses: actions-js/push@master
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: release-${{ steps.get_version.outputs.version }}
-          message: Release ${{ steps.get_version.outputs.version }}
 
-      - name: pr-develop
-        uses: vsoch/pull-request-action@1.0.6
+      - name: Install github cli
+        run: brew install hub
+      - name: Test cli
+        run: hub pr list
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PULL_REQUEST_BRANCH: "develop"
-          PULL_REQUEST_TITLE: Merge develop with ${{ needs.create_release_branch.outputs.release_branch }}
-
-      - name: pr-main
-        uses: vsoch/pull-request-action@1.0.6
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PULL_REQUEST_BRANCH: "main"
-          PULL_REQUEST_TITLE: Merge main with ${{ needs.create_release_branch.outputs.release_branch }}
-
+#      - name: Commit & Push changes
+#        uses: actions-js/push@master
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          branch: release-${{ steps.get_version.outputs.version }}
+#          message: Release ${{ steps.get_version.outputs.version }}
+#
+#      - name: pr-develop
+#        uses: vsoch/pull-request-action@1.0.6
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          PULL_REQUEST_BRANCH: "develop"
+#          PULL_REQUEST_TITLE: Merge develop with ${{ needs.create_release_branch.outputs.release_branch }}
+#
+#      - name: pr-main
+#        uses: vsoch/pull-request-action@1.0.6
+#        env:
+#          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#          PULL_REQUEST_BRANCH: "main"
+#          PULL_REQUEST_TITLE: Merge main with ${{ needs.create_release_branch.outputs.release_branch }}
+#
 
 #
 #  create-pr-main:
