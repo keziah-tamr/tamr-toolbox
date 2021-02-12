@@ -59,34 +59,50 @@ jobs:
           branch: release-${{ steps.get_version.outputs.version }}
           message: Release ${{ steps.get_version.outputs.version }}
 
-  create-pr-main:
-    runs-on: ubuntu-20.04
-    needs: [create_release_branch]
-    steps:
-      - name: Checkout release branch
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ needs.create_release_branch.outputs.release_branch }}
-      - uses: peter-evans/create-pull-request@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: Merge main with ${{ needs.create_release_branch.outputs.release_branch }}
-          title: Merge main with ${{ needs.create_release_branch.outputs.release_branch }}
-          base: main
-          branch: ${{ needs.create_release_branch.outputs.release_branch }}
+      - name: pr-develop
+          uses: vsoch/pull-request-action@1.0.6
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            PULL_REQUEST_BRANCH: "develop"
+            PULL_REQUEST_TITLE: Merge develop with ${{ needs.create_release_branch.outputs.release_branch }}
 
-  create-pr-develop:
-    runs-on: ubuntu-20.04
-    needs: [create_release_branch]
-    steps:
-      - name: Checkout release branch
-        uses: actions/checkout@v2
-        with:
-          ref: ${{ needs.create_release_branch.outputs.release_branch }}
-      - uses: peter-evans/create-pull-request@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: Merge develop with ${{ needs.create_release_branch.outputs.release_branch }}
-          title: Merge develop with ${{ needs.create_release_branch.outputs.release_branch }}
-          base: develop
-          branch: ${{ needs.create_release_branch.outputs.release_branch }}
+      - name: pr-main
+          uses: vsoch/pull-request-action@1.0.6
+          env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+            PULL_REQUEST_BRANCH: "main"
+            PULL_REQUEST_TITLE: Merge main with ${{ needs.create_release_branch.outputs.release_branch }}
+
+
+#
+#  create-pr-main:
+#    runs-on: ubuntu-20.04
+#    needs: [create_release_branch]
+#    steps:
+#      - name: Checkout release branch
+#        uses: actions/checkout@v2
+#        with:
+#          ref: ${{ needs.create_release_branch.outputs.release_branch }}
+#      - uses: peter-evans/create-pull-request@v3
+#        with:
+#          token: ${{ secrets.GITHUB_TOKEN }}
+#          commit-message: Merge main with ${{ needs.create_release_branch.outputs.release_branch }}
+#          title: Merge main with ${{ needs.create_release_branch.outputs.release_branch }}
+#          base: main
+#          branch: ${{ needs.create_release_branch.outputs.release_branch }}
+#
+#  create-pr-develop:
+#    runs-on: ubuntu-20.04
+#    needs: [create_release_branch]
+#    steps:
+#      - name: Checkout release branch
+#        uses: actions/checkout@v2
+#        with:
+#          ref: ${{ needs.create_release_branch.outputs.release_branch }}
+#      - uses: peter-evans/create-pull-request@v3
+#        with:
+#          token: ${{ secrets.GITHUB_TOKEN }}
+#          commit-message: Merge develop with ${{ needs.create_release_branch.outputs.release_branch }}
+#          title: Merge develop with ${{ needs.create_release_branch.outputs.release_branch }}
+#          base: develop
+#          branch: ${{ needs.create_release_branch.outputs.release_branch }}
