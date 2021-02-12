@@ -54,7 +54,7 @@ jobs:
 
   create-pr-main:
     runs-on: ubuntu-20.04
-    needs: [create-release-branch]
+    needs: [create_release_branch]
     steps:
       - name: Checkout release branch
         uses: actions/checkout@v2
@@ -70,7 +70,7 @@ jobs:
 
   create-pr-develop:
     runs-on: ubuntu-20.04
-    needs: [ create-release-branch ]
+    needs: [create_release_branch]
     steps:
       - name: Checkout release branch
         uses: actions/checkout@v2
