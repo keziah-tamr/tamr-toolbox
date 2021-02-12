@@ -60,6 +60,7 @@ jobs:
 
   create-release-pr:
     runs-on: ubuntu-20.04
+    needs: [create-release-branch]
     steps:
       - name: Export version
         run: echo ::set-output name=version::$(echo '${{ github.event.inputs.version_number }}-${{ github.event.inputs.version_toolname }}')
