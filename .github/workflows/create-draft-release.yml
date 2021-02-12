@@ -42,7 +42,7 @@ jobs:
           release_name: Release ${{ steps.get_version.outputs.version }}
           draft: true
           prerelease: false
-          body: "Documentation: https://datatamer.github.io/tamr-toolbox/" + ${{ steps.get_version.outputs.version }} + "/ \n\n Highlights:\n"
+          body: "Documentation: https://datatamer.github.io/tamr-toolbox/${{ steps.get_version.outputs.version }}/ \n\n Highlights:\n"
 
       - name: Upload pdf docs
         uses: actions/upload-release-asset@v1
