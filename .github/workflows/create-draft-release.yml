@@ -11,8 +11,8 @@ jobs:
         with:
           ref: "main"
       - name: Export version
-          run: echo ::set-output name=version::$(cat version.txt)
-          id: get_version
+        run: echo ::set-output name=version::$(cat version.txt)
+        id: get_version
 
       - name: Install Python
         uses: actions/setup-python@v2
