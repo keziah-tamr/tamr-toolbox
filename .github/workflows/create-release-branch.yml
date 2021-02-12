@@ -60,9 +60,9 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Create branch
-          run: git push --se-upstream origin
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: git push --se-upstream origin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install github cli
         run: brew install hub
