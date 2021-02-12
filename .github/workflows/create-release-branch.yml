@@ -58,13 +58,13 @@ jobs:
           base: develop
           branch: release-${{ steps.get_version.outputs.version }}
 
-      - uses: peter-evans/create-pull-request@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: Increment toolbox version to ${{ steps.get_version.outputs.version }}
-          title: Merge new features into main for ${{ steps.get_version.outputs.version }}
-          base: main
-          branch: release-${{ steps.get_version.outputs.version }}
+      #- uses: peter-evans/create-pull-request@v3
+      #  with:
+      #    token: ${{ secrets.GITHUB_TOKEN }}
+      #    commit-message: Increment toolbox version to ${{ steps.get_version.outputs.version }}
+      #    title: Merge new features into main for ${{ steps.get_version.outputs.version }}
+      #    base: main
+      #    branch: release-${{ steps.get_version.outputs.version }}
 
 
 
