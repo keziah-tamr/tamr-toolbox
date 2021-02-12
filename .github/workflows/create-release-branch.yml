@@ -58,12 +58,20 @@ jobs:
           base: develop
           branch: release-${{ steps.get_version.outputs.version }}
 
+  create-release-pr:
+    runs-on: ubuntu-20.04
+    steps:
+      - name: Export version
+        run: echo ::set-output name=version::$(echo '${{ github.event.inputs.version_number }}-${{ github.event.inputs.version_toolname }}')
+        id: get_version
+      - name: Checkout release branch
+        uses: actions/checkout@v2
+        with:
+          ref: release-${{ steps.get_version.outputs.version }}
       - uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: Increment toolbox version to ${{ steps.get_version.outputs.version }} in main
           title: Merge new features into main for ${{ steps.get_version.outputs.version }}
           base: main
-          # Cannot create two seperate PRs with the same  branch within Action
-          # So we create a "temp" branch for one of the PRs
-          branch: temp-release-${{ steps.get_version.outputs.version }}
+          branch: release-${{ steps.get_version.outputs.version }}
