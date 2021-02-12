@@ -1,4 +1,4 @@
-name: create_draft_release
+name: Create Draft Release
 on:
   workflow_dispatch:
 
@@ -30,6 +30,9 @@ jobs:
 
       - name: Build docs
         run: invoke docs
+
+      - name: Install wkhtmltopdf
+        run: apt-get install wkhtmltopdf
       - name: Create pdf
         run: python ./doc_src/generate_pdf.py
 
