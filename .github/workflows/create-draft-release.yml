@@ -32,7 +32,7 @@ jobs:
         run: invoke docs
 
       - name: Install wkhtmltopdf
-        run: brew cask install wkhtmltopdf
+        run: sudo brew install wkhtmltopdf
       - name: Create pdf
         run: python ./doc_src/generate_pdf.py
 
