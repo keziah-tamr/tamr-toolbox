@@ -10,8 +10,10 @@ on:
         required: true
 
 jobs:
-  create-release-branch:
+  create_release_branch:
     runs-on: ubuntu-20.04
+    outputs:
+      release_branch: release-${{ steps.get_version.outputs.version }}
     steps:
       - name: Checkout develop branch
         uses: actions/checkout@v2
@@ -50,29 +52,34 @@ jobs:
       - name: Move docs to online pages location
         run: cp -r docs/_draft_build docs/${{ steps.get_version_short.outputs.version }} && cp -r docs/_draft_build docs/latest
 
-      - uses: peter-evans/create-pull-request@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: Increment toolbox version to ${{ steps.get_version.outputs.version }} in develop
-          title: Merge new features into develop for ${{ steps.get_version.outputs.version }}
-          base: develop
-          branch: release-${{ steps.get_version.outputs.version }}
-
-  create-release-pr:
+  create-pr-main:
     runs-on: ubuntu-20.04
     needs: [create-release-branch]
     steps:
-      - name: Export version
-        run: echo ::set-output name=version::$(echo '${{ github.event.inputs.version_number }}-${{ github.event.inputs.version_toolname }}')
-        id: get_version
       - name: Checkout release branch
         uses: actions/checkout@v2
         with:
-          ref: release-${{ steps.get_version.outputs.version }}
+          ref: ${{ needs.create_release_branch.outputs.release_branch }}
       - uses: peter-evans/create-pull-request@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: Increment toolbox version to ${{ steps.get_version.outputs.version }} in main
-          title: Merge new features into main for ${{ steps.get_version.outputs.version }}
+          commit-message: Merge main with ${{ needs.create_release_branch.outputs.release_branch }}
+          title: Merge main with ${{ needs.create_release_branch.outputs.release_branch }}
           base: main
-          branch: temp-release-${{ steps.get_version.outputs.version }}
+          branch: ${{ needs.create_release_branch.outputs.release_branch }}
+
+  create-pr-develop:
+    runs-on: ubuntu-20.04
+    needs: [ create-release-branch ]
+    steps:
+      - name: Checkout release branch
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ needs.create_release_branch.outputs.release_branch }}
+      - uses: peter-evans/create-pull-request@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: Merge develop with ${{ needs.create_release_branch.outputs.release_branch }}
+          title: Merge develop with ${{ needs.create_release_branch.outputs.release_branch }}
+          base: develop
+          branch: ${{ needs.create_release_branch.outputs.release_branch }}
