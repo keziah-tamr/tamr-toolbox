@@ -32,7 +32,7 @@ jobs:
         run: invoke docs
 
       - name: Install wkhtmltopdf
-        run: apt-get install wkhtmltopdf
+        run: sudo apt-get install wkhtmltopdf
       - name: Create pdf
         run: python ./doc_src/generate_pdf.py
 
