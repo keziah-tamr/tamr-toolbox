@@ -34,12 +34,12 @@ jobs:
       - name: Install requirements
         run: python install.py
 
-      - name: Run tests
-        run: invoke test
-      - name: Run lint check
-        run: invoke lint
-      - name: Run format check
-        run: invoke format
+      #- name: Run tests
+      #  run: invoke test
+      #- name: Run lint check
+      #  run: invoke lint
+      #- name: Run format check
+      #  run: invoke format
 
       - name: Build docs
         run: invoke docs
