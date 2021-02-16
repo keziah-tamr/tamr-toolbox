@@ -31,10 +31,10 @@ jobs:
       - name: Build docs
         run: invoke docs
 
-      - name: Prepare for wkhtmltopdf install
-        run: sudo sed -i 's/azure.archive.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
+#      - name: Prepare for wkhtmltopdf install
+#        run: sudo sed -i 's/azure.archive.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
       - name: Install wkhtmltopdf
-        run: sudo apt install wkhtmltopdf
+        run: pip install wkhtmltopdf
       - name: Create pdf
         run: python ./doc_src/generate_pdf.py
 
