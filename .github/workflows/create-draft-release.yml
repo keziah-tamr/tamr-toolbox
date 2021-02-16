@@ -4,7 +4,7 @@ on:
 
 jobs:
   create_draft_release:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-18.04
     steps:
       - name: Checkout main branch
         uses: actions/checkout@v2
@@ -32,7 +32,7 @@ jobs:
         run: invoke docs
 
       - name: Install wkhtmltopdf
-        run: sudo apt full-upgrade && sudo apt install wkhtmltopdf
+        run: sudo apt install wkhtmltopdf --fix-missing
       - name: Create pdf
         run: python ./doc_src/generate_pdf.py
 
