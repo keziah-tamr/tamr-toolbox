@@ -19,9 +19,9 @@ jobs:
       - name: Install Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.6
+          python-version: 3.7
       - name: Install requirements
-        run: sudo python install.py
+        run: python install.py
 
 #      - name: Run tests
 #        run: invoke test
