@@ -4,7 +4,7 @@ on:
 
 jobs:
   create_draft_release:
-    runs-on: ubuntu-18.04
+    runs-on: centos-7
     steps:
       - name: Checkout main branch
         uses: actions/checkout@v2
@@ -34,7 +34,7 @@ jobs:
 #      - name: Prepare for wkhtmltopdf install
 #        run: sudo sed -i 's/azure.archive.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
       - name: Install wkhtmltopdf
-        run: brew install Caskroom/cask/wkhtmltopdf
+        run: yum install wkhtmltopdf
       - name: Create pdf
         run: python ./doc_src/generate_pdf.py
 
