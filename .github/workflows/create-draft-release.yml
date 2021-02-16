@@ -16,12 +16,19 @@ jobs:
         run: echo ::set-output name=version::$(cat version.txt)
         id: get_version
 
+      # Install OS specific requirements
+      - name: Install environment specific requirements
+        #if: startsWith(github.event.inputs.os, 'ubuntu')
+        run: apt update -y  && apt install -y software-properties-common && apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev wget zip
+#      - name: Install environment specific requirements
+#        if: startsWith(github.event.inputs.os, 'centos')
+#        run: yum update -y && yum -y groupinstall "Development Tools" && yum install -y wget gcc openssl-devel bzip2-devel libffi-devel zip
+
+      # Install toolbox and Python
       - name: Install Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: 3.7
-      - name: Install requirements
-        run: python install.py
+        run: wget https://www.python.org/ftp/python/${{ github.event.inputs.python_version }}/Python-${{ github.event.inputs.python_version }}.tgz && tar xzf Python-${{ github.event.inputs.python_version }}.tgz && cd Python-${{ github.event.inputs.python_version }} && ./configure --with-ensurepip=install &&  make install -j 8
+      - name: Install toolbox requirements
+        run: python3 install.py
 
 #      - name: Run tests
 #        run: invoke test
@@ -36,7 +43,7 @@ jobs:
 #      - name: Prepare for wkhtmltopdf install
 #        run: sudo sed -i 's/azure.archive.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
       - name: Install wkhtmltopdf
-        run: sudo apt install wkhtmltopdf --fix-missing
+        run: apt install wkhtmltopdf --fix-missing
       - name: Create pdf
         run: python ./doc_src/generate_pdf.py
 
