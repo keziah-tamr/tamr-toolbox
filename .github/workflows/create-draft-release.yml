@@ -4,7 +4,9 @@ on:
 
 jobs:
   create_draft_release:
-    runs-on: "centos:8"
+    runs-on: ubuntu-latest
+      container:
+        image: ubuntu:18.04
     steps:
       - name: Checkout main branch
         uses: actions/checkout@v2
@@ -34,7 +36,7 @@ jobs:
 #      - name: Prepare for wkhtmltopdf install
 #        run: sudo sed -i 's/azure.archive.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
       - name: Install wkhtmltopdf
-        run: yum install wkhtmltopdf
+        run: sudo apt install wkhtmltopdf --fix-missing
       - name: Create pdf
         run: python ./doc_src/generate_pdf.py
 
