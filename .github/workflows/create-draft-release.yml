@@ -31,9 +31,8 @@ jobs:
       - name: Build docs
         run: invoke docs
 
-      #can;t cask install for some reason, install from github instead
       - name: Install wkhtmltopdf
-        run: brew update && brew upgrade --cask && brew install --cask wkhtmltopdf
+        run: sudo apt install wkhtmltopdf
       - name: Create pdf
         run: python ./doc_src/generate_pdf.py
 
