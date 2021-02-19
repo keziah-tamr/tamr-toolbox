@@ -22,9 +22,9 @@ jobs:
 
       # Install toolbox and Python
       - name: Install Python
-        run: wget https://www.python.org/ftp/python/3.7.5/Python-3.7.5.tgz && tar xzf Python-3.7.5.tgz && cd Python-3.7.5 && ./configure --with-ensurepip=install &&  make install -j 8
+        run: wget https://www.python.org/ftp/python/3.7.5/Python-3.7.5.tgz && tar xzf Python-3.7.5.tgz && cd Python-3.7.5 && ./configure --with-ensurepip=install &&  make install -j 8 && alias python=python3
       - name: Install toolbox requirements
-        run: python3 install.py
+        run: python install.py
 
       - name: Run tests
         run: invoke test
@@ -40,7 +40,7 @@ jobs:
         run: wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox-0.12.6-1.centos8.x86_64.rpm && dnf -y install wkhtmltox-0.12.6-1.centos8.x86_64.rpm
 
       - name: Create pdf
-        run: python3 ./doc_src/generate_pdf.py
+        run: python ./doc_src/generate_pdf.py
 
       - name: Create Release
         uses: actions/create-release@v1
