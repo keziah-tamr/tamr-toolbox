@@ -9,11 +9,13 @@ jobs:
       image: centos:8
     steps:
 
-      # Checkout the target branch
-      - name: Checkout branch
+      - name: Checkout main branch
         uses: actions/checkout@v2
         with:
-          ref: ${{ github.event.inputs.branch_name }}
+          ref: "main"
+      - name: Export version
+        run: echo ::set-output name=version::$(cat version.txt)
+        id: get_version
 
       - name: Install environment specific requirements
         run: yum update -y && yum -y groupinstall "Development Tools" && yum install -y wget gcc openssl-devel bzip2-devel libffi-devel zip
@@ -24,23 +26,21 @@ jobs:
       - name: Install toolbox requirements
         run: python3 install.py
 
-
-#      - name: Run tests
-#        run: invoke test
-#      - name: Run lint check
-#        run: invoke lint
-#      - name: Run format check
-#        run: invoke format
+      - name: Run tests
+        run: invoke test
+      - name: Run lint check
+        run: invoke lint
+      - name: Run format check
+        run: invoke format
 
       - name: Build docs
         run: invoke docs
 
-#      - name: Prepare for wkhtmltopdf install
-#        run: sudo sed -i 's/azure.archive.ubuntu.com/old-releases.ubuntu.com/g' /etc/apt/sources.list
       - name: Install wkhtmltopdf
         run: wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox-0.12.6-1.centos8.x86_64.rpm && dnf -y install wkhtmltox-0.12.6-1.centos8.x86_64.rpm
+
       - name: Create pdf
-        run: python ./doc_src/generate_pdf.py
+        run: python3 ./doc_src/generate_pdf.py
 
       - name: Create Release
         uses: actions/create-release@v1
