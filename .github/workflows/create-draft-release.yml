@@ -3,32 +3,27 @@ on:
   workflow_dispatch:
 
 jobs:
-  create_draft_release:
+  CreateZip:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:18.04
+      image: centos:8
     steps:
-      - name: Checkout main branch
+
+      # Checkout the target branch
+      - name: Checkout branch
         uses: actions/checkout@v2
         with:
-          ref: "main"
-      - name: Export version
-        run: echo ::set-output name=version::$(cat version.txt)
-        id: get_version
+          ref: ${{ github.event.inputs.branch_name }}
 
-      # Install OS specific requirements
       - name: Install environment specific requirements
-        #if: startsWith(github.event.inputs.os, 'ubuntu')
-        run: apt update -y  && apt install -y software-properties-common && apt install -y build-essential zlib1g-dev libncurses5-dev libgdbm-dev libnss3-dev libssl-dev libreadline-dev libffi-dev wget zip
-#      - name: Install environment specific requirements
-#        if: startsWith(github.event.inputs.os, 'centos')
-#        run: yum update -y && yum -y groupinstall "Development Tools" && yum install -y wget gcc openssl-devel bzip2-devel libffi-devel zip
+        run: yum update -y && yum -y groupinstall "Development Tools" && yum install -y wget gcc openssl-devel bzip2-devel libffi-devel zip
 
       # Install toolbox and Python
       - name: Install Python
         run: wget https://www.python.org/ftp/python/3.7.5/Python-3.7.5.tgz && tar xzf Python-3.7.5.tgz && cd Python-3.7.5 && ./configure --with-ensurepip=install &&  make install -j 8
       - name: Install toolbox requirements
         run: python3 install.py
+
 
 #      - name: Run tests
 #        run: invoke test
