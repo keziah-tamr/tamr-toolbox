@@ -41,7 +41,7 @@ jobs:
         run: invoke docs
 
       - name: Install wkhtmltopdf
-        run: sudo apt-get update && sudo apt-get install xvfb libfontconfig wkhtmltopdf && sudo ln -s /usr/local/bin/wkhtmlto /usr/bin/wkhtmltopdf
+        run: sudo apt-get update && sudo apt-get install xvfb libfontconfig wkhtmltopdf
 
       - name: Create pdf
         run: python ./doc_src/generate_pdf.py
