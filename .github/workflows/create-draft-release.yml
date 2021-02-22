@@ -4,7 +4,7 @@ on:
 
 jobs:
   CreateZip:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
     steps:
       - name: Install Python
         uses: actions/setup-python@v2
@@ -23,14 +23,6 @@ jobs:
         run: echo ::set-output name=version::$(cat version.txt | sed "s/\([0-9]\.[0-9]\).[0-9]/\1/g")
         id: get_version_short
 
-#      - name: Install environment specific requirements
-#        run: yum update -y && yum -y groupinstall "Development Tools" && yum install -y wget gcc openssl-devel bzip2-devel libffi-devel zip
-
-#      # Install toolbox and Python
-#      - name: Install Python
-#        run: wget https://www.python.org/ftp/python/3.7.5/Python-3.7.5.tgz && tar xzf Python-3.7.5.tgz && cd Python-3.7.5 && ./configure --with-ensurepip=install &&  make install -j 8
-#      - name: Create venv
-#        run: python3 -m venv toolbox-venv && source toolbox-venv/bin/activate
       - name: Install toolbox requirements
         run: python install.py
 
@@ -46,7 +38,6 @@ jobs:
 
       - name: Install wkhtmltopdf
         run:  sudo apt-get update && sudo apt-get install openssl build-essential xorg libssl-dev && wget https://github.com/wkhtmltopdf/wkhtmltopdf/releases/download/0.12.4/wkhtmltox-0.12.4_linux-generic-amd64.tar.xz && tar xvJf wkhtmltox-0.12.4_linux-generic-amd64.tar.xz && sudo cp wkhtmltox/bin/wkhtmlto* /usr/bin/
-
       - name: Create pdf
         run: python ./doc_src/generate_pdf.py
 
