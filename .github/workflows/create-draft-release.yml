@@ -22,7 +22,9 @@ jobs:
 
       # Install toolbox and Python
       - name: Install Python
-        run: wget https://www.python.org/ftp/python/3.7.5/Python-3.7.5.tgz && tar xzf Python-3.7.5.tgz && cd Python-3.7.5 && ./configure --with-ensurepip=install &&  make install -j 8 && alias python=python3
+        run: wget https://www.python.org/ftp/python/3.7.5/Python-3.7.5.tgz && tar xzf Python-3.7.5.tgz && cd Python-3.7.5 && ./configure --with-ensurepip=install &&  make install -j 8
+      - name: Create and enter venv
+        run: python3 -m venv toolbox-venv && source toolbox-venv/bin/activate
       - name: Install toolbox requirements
         run: python install.py
 
