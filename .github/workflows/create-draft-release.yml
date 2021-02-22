@@ -5,10 +5,7 @@ on:
 jobs:
   CreateZip:
     runs-on: ubuntu-latest
-    container:
-      image: centos:8
     steps:
-
       - name: Install Python
         uses: actions/setup-python@v2
         with:
