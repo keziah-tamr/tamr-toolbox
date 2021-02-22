@@ -18,6 +18,10 @@ jobs:
       - name: Export version
         run: echo ::set-output name=version::$(cat version.txt)
         id: get_version
+      - name: Export short version
+        # this sed drops the patch version from the name changing 1.2.3-axe into 1.2-axe
+        run: echo ::set-output name=version::$(cat version.txt | sed "s/\([0-9]\.[0-9]\).[0-9]/\1/g")
+        id: get_version_short
 
 #      - name: Install environment specific requirements
 #        run: yum update -y && yum -y groupinstall "Development Tools" && yum install -y wget gcc openssl-devel bzip2-devel libffi-devel zip
@@ -56,7 +60,7 @@ jobs:
           release_name: Release ${{ steps.get_version.outputs.version }}
           draft: true
           prerelease: false
-          body: "Documentation: https://datatamer.github.io/tamr-toolbox/${{ steps.get_version.outputs.version }}/ \n\n Highlights:\n"
+          body: "Documentation: https://datatamer.github.io/tamr-toolbox/${{ steps.get_version_short.outputs.version }}/ \n\n Highlights:\n  * Highlight 1\n  * Highlight 2"
 
       - name: Upload pdf docs
         uses: actions/upload-release-asset@v1
