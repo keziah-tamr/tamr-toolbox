@@ -41,7 +41,7 @@ jobs:
         run: invoke docs
 
       - name: Install wkhtmltopdf
-        run: wget https://github.com/wkhtmltopdf/packaging/releases/download/0.12.6-1/wkhtmltox-0.12.6-1.centos8.x86_64.rpm && dnf -y install wkhtmltox-0.12.6-1.centos8.x86_64.rpm
+        run: sudo apt-get update && sudo apt-get install xvfb libfontconfig wkhtmltopdf && sudo ln -s /usr/local/bin/wkhtmlto /usr/bin/wkhtmltopdf
 
       - name: Create pdf
         run: python ./doc_src/generate_pdf.py
